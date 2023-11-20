@@ -116,21 +116,19 @@ const resolvers = {
     bookCount: () => books.length,
     authorCount: () => authors.length,
     allBooks: (root, args) => {
-      console.log(args)
+      let filteredBooks = [...books]
       if (Object.keys(args).length === 0) {
         return books
-      } else if (args.hasOwnProperty('author')) {
-        const authorBooks = books.filter(book => book.author === args.author)
-        return authorBooks
-      } else if (args.hasOwnProperty('genre')) {
-        console.log('check', books.genres)
-        const genreBooks = books.filter(book =>
+      } 
+      if (args.hasOwnProperty('author')) {
+        filteredBooks = filteredBooks.filter(book => book.author === args.author)
+      } 
+      if (args.hasOwnProperty('genre')) {
+        filteredBooks = filteredBooks.filter(book =>
           book.genres.includes(args.genre)
         )
-        return genreBooks
-      } else {
-        console.log('not working')
-      }
+      } 
+      return filteredBooks
     },
     allAuthors: () => authors,
   },
