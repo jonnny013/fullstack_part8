@@ -18,7 +18,7 @@ const App = () => {
 
       <Books show={page === 'books'} />
 
-      <NewBook show={page === 'add'} />
+      <NewBook show={page === 'add'} setPage={setPage} />
     </div>
   )
 }
