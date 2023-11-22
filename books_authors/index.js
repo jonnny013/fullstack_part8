@@ -1,7 +1,26 @@
 const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
-
 const { v1: uuid } = require('uuid')
+
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
+const Author = require('./models/author')
+const Book = require('./models/book')
+
+require('dotenv').config()
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+console.log('connecting to', MONGODB_URI)
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch(error => {
+    console.log('error connection to MongoDB:', error.message)
+  })
 
 let authors = [
   {
@@ -93,7 +112,7 @@ const typeDefs = `
   type Book {
     title: String!
     published: Int!
-    author: String!
+    author: Author!
     id: ID!
     genres: [String!]!
   }
@@ -129,8 +148,8 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
+    bookCount: async () => Book.collection.countDocuments(),
+    authorCount: async () => Author.collection.countDocuments(),
     allBooks: (root, args) => {
       let filteredBooks = [...books]
       if (Object.keys(args).length === 0) {
@@ -146,7 +165,7 @@ const resolvers = {
       } 
       return filteredBooks
     },
-    allAuthors: () => authors,
+    allAuthors: async (root, args) => Author.find({}),
   },
   Author: {
     bookCount: root => {
@@ -155,14 +174,18 @@ const resolvers = {
     },
   },
   Mutation: {
-    addBook: (roots, args) => {
-      const book = { ...args, id: uuid() }
-      books = books.concat(book)
-      if (!authors.find(author => author.name === args.author)) {
-        const author = { name: args.author, id: uuid() }
-        authors = authors.concat(author)
+    addBook: async (roots, args) => {
+      const author = await Author.findOne({ name: args.author })
+      console.log(author)
+      if (!author) {
+        const newAuthor = new Author({ name: args.author })
+        await newAuthor.save()
+        args.author = newAuthor
+      } else {
+        args.author = author
       }
-      return book
+      const book = new Book({ ...args })
+      return book.save()
     },
     editAuthor: (root, args) => {
       console.log(args)
