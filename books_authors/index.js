@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 mongoose.set('strictQuery', false)
 const Author = require('./models/author')
 const Book = require('./models/book')
+const User = require('./models/user')
+const jwt = require('jsonwebtoken')
 
 require('dotenv').config()
 
@@ -107,6 +109,16 @@ let books = [
 ]
 
 const typeDefs = `
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Book {
     title: String!
     published: Int!
@@ -127,6 +139,7 @@ const typeDefs = `
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    me: User
   }
 
   type Mutation {
@@ -140,7 +153,17 @@ const typeDefs = `
     editAuthor(
       name: String!
       setBornTo: Int!
-    ) : Author
+    ): Author
+
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): Token
+
+    login(
+    username: String!
+    password: String!
+    ): Token
   }
 `
 
@@ -188,7 +211,7 @@ const resolvers = {
             {
               extensions: {
                 code: 'BAD_USER_INPUT',
-                invalidArgs: args.author
+                invalidArgs: args.author,
               },
             }
           )
@@ -213,6 +236,7 @@ const resolvers = {
       }
       return book
     },
+
     editAuthor: async (root, args) => {
       const author = await Author.findOne({ name: args.name })
       if (!author) {
@@ -236,6 +260,38 @@ const resolvers = {
         })
       }
       return author
+    },
+
+    createUser: async (root, args) => {
+      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
+      return user.save().catch(error => {
+        throw new GraphQLError('Creating a new user failed', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.username,
+            error,
+          },
+        })
+      })
+    },
+
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+
+      if (!user || args.password !== 'secret') {
+        throw new GraphQLError('wrong credentials', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+          },
+        })
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+
+      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
     },
   },
 }
