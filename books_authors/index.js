@@ -150,13 +150,14 @@ const resolvers = {
   Query: {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
-      let filteredBooks = [...books]
+    allBooks: async (root, args) => {
+      let filteredBooks = await Book.find({}) 
       if (Object.keys(args).length === 0) {
-        return books
+        return filteredBooks
       } 
       if (args.hasOwnProperty('author')) {
-        filteredBooks = filteredBooks.filter(book => book.author === args.author)
+        const author = await Author.findOne({ name: args.author })
+        filteredBooks = filteredBooks.filter(book => book.author.toString() === author._id.toString())
       } 
       if (args.hasOwnProperty('genre')) {
         filteredBooks = filteredBooks.filter(book =>
@@ -168,8 +169,9 @@ const resolvers = {
     allAuthors: async (root, args) => Author.find({}),
   },
   Author: {
-    bookCount: root => {
-      const authorBooks = books.filter(book => book.author === root.name)
+    bookCount: async (root) => {
+      const author = await Author.findOne({name: root.name})
+      const authorBooks = await Book.find(book => book.author.toString() === author._id.toString())
       return authorBooks.length
     },
   },
@@ -187,15 +189,14 @@ const resolvers = {
       const book = new Book({ ...args })
       return book.save()
     },
-    editAuthor: (root, args) => {
+    editAuthor: async (root, args) => {
       console.log(args)
-      const author = authors.find(author => author.name === args.name)
+      const author = await Author.findOne({name: args.name})
       if (!author) {
         return null
       }
-      const updatedAuthor = { ...author, born: args.setBornTo }
-      authors = authors.map(a => a.name === args.name ? updatedAuthor : a)
-      return updatedAuthor
+      author.born = args.setBornTo
+      return author.save()
     }
   }
 }
