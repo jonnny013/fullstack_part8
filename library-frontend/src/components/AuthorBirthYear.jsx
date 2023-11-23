@@ -22,7 +22,6 @@ const AuthorBirthYear = ({ authors }) => {
     setBorn('')
     setName('')
   }
-console.log(name)
   return (
     <>
       <h2>Set Birth Year</h2>
