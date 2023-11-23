@@ -194,12 +194,18 @@ const resolvers = {
       return currentUser
     },
   },
+  Book: {
+    author: async root => {
+      const author = await Author.findById(root.author)
+      return author
+    }
+  },
   Author: {
     bookCount: async root => {
       const author = await Author.findOne({ name: root.name })
-      const authorBooks = await Book.find(
-        book => book.author.toString() === author._id.toString()
-      )
+      const authorBooks = await Book.find({
+        author: author  
+      })
       return authorBooks.length
     },
   },
