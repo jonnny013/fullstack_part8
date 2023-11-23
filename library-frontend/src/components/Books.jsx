@@ -17,7 +17,7 @@ const Books = props => {
     return <div>loading...</div>
   }
   const books = result.data.allBooks
-
+  console.log(books)
   const allGenres = books.map(a => a.genres).flat()
   const filteredGenres = _.uniq(allGenres, false)
 
