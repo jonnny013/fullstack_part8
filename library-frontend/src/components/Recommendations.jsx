@@ -13,7 +13,10 @@ const Recommendations = props => {
 
   useEffect(() => {
     if (userResult.data) {
-      setGenre(userResult.data.me.favoriteGenre)
+      if (userResult.data.me){
+        setGenre(userResult.data.me.favoriteGenre)
+      }
+      
     }
   }, [userResult.data])
   if (!props.show) {
