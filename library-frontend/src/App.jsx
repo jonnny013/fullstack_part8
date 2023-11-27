@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm'
 import Recommendations from './components/Recommendations'
 import {useApolloClient, useSubscription} from '@apollo/client'
 import Notification from './components/Notification'
-import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { ALL_BOOKS, BOOK_ADDED} from './queries'
 
 export const updateCache = (cache, query, addedBook) => {
   const uniqByName = a => {
@@ -24,6 +24,8 @@ export const updateCache = (cache, query, addedBook) => {
   })
 }
 
+
+
 const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
@@ -38,11 +40,14 @@ const App = () => {
     },
   })
 
+
+
   const logout = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
     setNotification('See you next time!')
+    setPage('authors')
   }
 
   return (

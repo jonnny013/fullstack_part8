@@ -10,9 +10,10 @@ const Recommendations = props => {
     variables: { genre },
   })
   const userResult = useQuery(USER_INFO)
-
+  userResult
   useEffect(() => {
     if (userResult.data) {
+        console.log(userResult.data)
       if (userResult.data.me){
         setGenre(userResult.data.me.favoriteGenre)
       }
@@ -27,6 +28,7 @@ const Recommendations = props => {
     return <div>loading...</div>
   }
   const books = result.data.allBooks
+  console.log(genre)
   return (
     <div>
       <h2>Recommended for you</h2>
