@@ -9,11 +9,10 @@ import Notification from './components/Notification'
 import { ALL_BOOKS, BOOK_ADDED } from './queries'
 
 export const updateCache = (cache, query, addedBook) => {
-  // helper that is used to eliminate saving same person twice
   const uniqByName = a => {
     let seen = new Set()
     return a.filter(item => {
-      let k = item.name
+      let k = item.title
       return seen.has(k) ? false : seen.add(k)
     })
   }
@@ -65,7 +64,7 @@ const App = () => {
         {token && <button onClick={logout}>logout</button>}
       </div>
 
-      <Authors show={page === 'authors'} token={token} />
+      <Authors show={page === 'authors'} token={token} setNotification={setNotification} />
       <Books show={page === 'books'} />
       <Recommendations show={page === 'recommendations'} />
       <LoginForm

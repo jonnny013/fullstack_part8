@@ -3,14 +3,21 @@ import { useMutation } from '@apollo/client'
 
 import { EDIT_BIRTH_YEAR } from '../queries'
 
-const AuthorBirthYear = ({ authors }) => {
+const AuthorBirthYear = ({ authors, setNotification }) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
-  const [ changeYear, result ] = useMutation(EDIT_BIRTH_YEAR)
+  const [changeYear, result] = useMutation(EDIT_BIRTH_YEAR, {
+    onError: error => {
+      setNotification(error.graphQLErrors.map(e => e.message).join('\n'))
+    },
+    onCompleted: () => {
+      setNotification(`Birth year updated`)
+    },
+  })
 
   useEffect(() => {
     if (result.data && result.data.editAuthor === null) {
-      console.log('person not found')
+      setNotification('person not found')
     }
   }, [result.data])
 

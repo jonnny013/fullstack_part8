@@ -13,10 +13,11 @@ const NewBook = props => {
     refetchQueries: [{ query: ALL_AUTHORS }, 'getAllBooks'],
     onError: error => {
       props.setNotification(error.graphQLErrors.map(e => e.message).join('\n'))
+      console.log(error)
     },
     update: (cache, response) => {
       updateCache(cache, { query: ALL_BOOKS }, response.data.addBook)
-    }
+    },
   }) 
 
   if (!props.show) {
