@@ -28,7 +28,8 @@ const resolvers = {
       }
       return filteredBooks
     },
-    allAuthors: async (root, args) => Author.find({}),
+    allAuthors: async (root, args) => {
+      return Author.find({}).populate('books')},
     me: (root, args, { currentUser }) => {
       return currentUser
     },
@@ -41,16 +42,12 @@ const resolvers = {
   },
   Author: {
     bookCount: async root => {
-      const author = await Author.findOne({ name: root.name })
-      const authorBooks = await Book.find({
-        author: author,
-      })
-      return authorBooks.length
+      return root.books.length
     },
   },
   Mutation: {
     addBook: async (roots, args, { currentUser }) => {
-      const author = await Author.findOne({ name: args.author })
+      let author = await Author.findOne({ name: args.author })
       if (!currentUser) {
         throw new GraphQLError('not authenticated', {
           extensions: {
@@ -73,14 +70,18 @@ const resolvers = {
         const newAuthor = new Author({ name: args.author })
         await newAuthor.save()
         args.author = newAuthor
+        author = newAuthor
       } else {
         args.author = author
       }
       const book = new Book({ ...args })
       try {
         await book.save()
+        author.books = author.books.concat(book._id)
+        await author.save()
       } catch (error) {
-        throw new GraphQLError('Please check all categories', {
+        console.error('error', error)
+        throw new GraphQLError(`Please check all categories: ${error}`, {
           extensions: {
             code: 'BAD_USER_INPUT',
             invalidArgs: args,
