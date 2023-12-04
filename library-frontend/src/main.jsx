@@ -24,10 +24,14 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: 'https://jonlovesbookapp.fly.dev' || 'http://localhost:4000',
 })
 
-const wsLink = new GraphQLWsLink(createClient({ url: 'ws://localhost:4000' }))
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'wss://jonlovesbookapp.fly.dev' || 'ws://localhost:4000',
+  })
+)
 
 const splitLink = split(
   ({ query }) => {
