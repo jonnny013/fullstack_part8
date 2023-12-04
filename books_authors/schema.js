@@ -3,6 +3,7 @@ const typeDefs = `
     username: String!
     favoriteGenre: String!
     id: ID!
+    passwordHash: String!
   }
 
   type Token {
@@ -49,6 +50,7 @@ const typeDefs = `
     createUser(
       username: String!
       favoriteGenre: String!
+      password: String!
     ): User
 
     login(

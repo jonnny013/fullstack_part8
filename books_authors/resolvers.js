@@ -5,6 +5,7 @@ const Book = require('./models/book')
 const User = require('./models/user')
 const { PubSub } = require('graphql-subscriptions')
 const pubsub = new PubSub()
+const bcrypt = require('bcrypt')
 
 const resolvers = {
   Query: {
@@ -125,9 +126,16 @@ const resolvers = {
     },
 
     createUser: async (root, args) => {
+      const { username, favoriteGenre, password } = args
+      if (password.length < 6 ){
+        throw new Error('Password must be 6 characters or more')
+      }
+      const saltRounds = 10
+      const passwordHash = await bcrypt.hash(password, saltRounds)
       const user = new User({
-        username: args.username,
-        favoriteGenre: args.favoriteGenre,
+        username,
+        favoriteGenre,
+        passwordHash
       })
       return user.save().catch(error => {
         throw new GraphQLError('Creating a new user failed', {
@@ -142,8 +150,8 @@ const resolvers = {
 
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
-
-      if (!user || args.password !== 'secret') {
+      const passwordCheck = user === null ? false : await bcrypt.compare(args.password, user.passwordHash)
+      if (!(user && passwordCheck)) {
         throw new GraphQLError('wrong credentials', {
           extensions: {
             code: 'BAD_USER_INPUT',
