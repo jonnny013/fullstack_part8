@@ -73,6 +73,7 @@ const start = async () => {
     '/',
     cors(),
     express.json(),
+    express.static('dist'),
     expressMiddleware(server, {
       context: async ({ req }) => {
         const auth = req ? req.headers.authorization : null
