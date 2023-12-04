@@ -82,4 +82,10 @@ export const BOOK_ADDED = gql`
   ${BOOK_DETAILS}
 `
 
-
+export const CREATE_USER = gql`
+  mutation createUser($username: String!, $password: String!, $favoriteGenre: String!) {
+    createUser(username: $username, password: $password, favoriteGenre: $favoriteGenre) {
+      username
+    }
+  }
+`
