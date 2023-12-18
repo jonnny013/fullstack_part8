@@ -8,7 +8,9 @@ import {useApolloClient, useSubscription} from '@apollo/client'
 import Notification from './components/Notification'
 import { ALL_BOOKS, BOOK_ADDED} from './queries'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
+import {useTranslation} from 'react-i18next';
+import NavBar from './components/NavBar'
+import Header from './components/Header'
 
 export const updateCache = (cache, query, addedBook) => {
   const uniqByName = a => {
@@ -33,6 +35,7 @@ const App = () => {
   const [page, setPage] = useState('authors')
   const client = useApolloClient()
   const [notification, setNotification] = useState(null)
+  const {t} = useTranslation()
 
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
@@ -48,44 +51,15 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
-    setNotification('See you next time!')
+    setNotification(t("logoutNotification"))
     setPage('authors')
   }
 
   return (
     <div style={{margin: 10}}>
       <Notification info={notification} setNotification={setNotification} />
-      <div style={{margin: 10, display: 'flex', gap: 10, overflow: 'scroll'}}>
-        <Button variant='secondary' onClick={() => setPage('authors')}>
-          Authors
-        </Button>
-        {'  '}
-        <Button variant='secondary' onClick={() => setPage('books')}>
-          Books
-        </Button>
-        {'  '}
-        {token ? (
-          <Button variant='secondary' onClick={() => setPage('add')}>
-            Add book
-          </Button>
-        ) : (
-          <Button variant='secondary' onClick={() => setPage('login')}>
-            Login
-          </Button>
-        )}{' '}
-        {token && (
-          <Button variant='secondary' onClick={() => setPage('recommendations')}>
-            Recommendations
-          </Button>
-        )}
-        {'  '}
-        {token && (
-          <Button variant='secondary' onClick={logout}>
-            Logout
-          </Button>
-        )}
-      </div>
-
+      <Header token={token} logout={logout} setPage={setPage} />
+      <NavBar setPage={setPage} logout={logout} token={token} />
       <Authors
         show={page === 'authors'}
         token={token}
