@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import Table from 'react-bootstrap/Table';
 
-const Recommendations = props => {
+const Recommendations = () => {
   const [genre, setGenre] = useState(undefined)
 
   const result = useQuery(ALL_BOOKS, {
@@ -20,9 +20,6 @@ const Recommendations = props => {
       
     }
   }, [userResult.data])
-  if (!props.show) {
-    return null
-  }
 
   if (result.loading) {
     return <div>loading...</div>

@@ -1,11 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import {useTranslation} from 'react-i18next';
 
-const Header = ({setPage, logout, token}) => {
+const Header = ({ logout, token, setShowLogin, showLogin}) => {
   const {i18n, t} = useTranslation();
 
   const changeLanguage = () => {
-    console.log('translate');
     const newLang = i18n.language === 'en' ? 'zw' : 'en';
     i18n.changeLanguage(newLang);
   };
@@ -18,7 +17,7 @@ const Header = ({setPage, logout, token}) => {
           {t('nav-Logout')}
         </Button>
       ) : (
-        <Button variant='secondary' onClick={() => setPage('login')}>
+        <Button variant='secondary' onClick={() => setShowLogin(!showLogin)}>
           {t('nav-Login')}
         </Button>
       )}

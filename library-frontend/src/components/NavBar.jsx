@@ -1,36 +1,41 @@
 import {useTranslation} from 'react-i18next';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import Authors from './Authors';
+import Books from './Books';
+import NewBook from './NewBook';
+import Recommendations from './Recommendations';
 
-const NavBar = ({setPage, token}) => {
+const NavBar = ({ token, setNotification}) => {
   const {t} = useTranslation();
   return (
-    <Tabs>
-      <Tab
-        variant='secondary'
-        onClick={() => setPage('authors')}
-        title={t('nav-Authors')}
-      ></Tab>
-      {'  '}
-      <Tab
-        variant='secondary'
-        onClick={() => setPage('books')}
-        title={t('nav-Books')}
-      ></Tab>
-      {'  '}
+    <Tabs defaultActiveKey='authors'>
+      <Tab eventKey='authors' title={t('nav-Authors')}>
+        <Authors
+          token={token}
+          setNotification={setNotification}
+        />
+      </Tab>
+      <Tab eventKey='books' title={t('nav-Books')}>
+        <Books  />
+      </Tab>
       {token && (
         <Tab
-          variant='secondary'
-          onClick={() => setPage('add')}
+          eventKey='addbooks'
           title={t('nav-Add-Books')}
-        ></Tab>
+        >
+          <NewBook
+            setNotification={setNotification}
+          />
+        </Tab>
       )}
       {token && (
         <Tab
-          variant='secondary'
-          onClick={() => setPage('recommendations')}
+          eventKey='recom'
           title={t('nav-Recom')}
-        ></Tab>
+        >
+          <Recommendations  />
+        </Tab>
       )}
     </Tabs>
   );

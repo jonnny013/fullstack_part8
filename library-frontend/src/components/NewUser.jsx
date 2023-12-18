@@ -3,8 +3,9 @@ import { useMutation } from '@apollo/client'
 import { CREATE_USER } from '../queries'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import CloseButton from 'react-bootstrap/CloseButton';
 
-const NewUser = ({ setNewUser, newUser, setNotification, login }) => {
+const NewUser = ({ setNewUser, newUser, setNotification, login, setShowLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [genre, setGenre] = useState('')
@@ -33,7 +34,21 @@ const NewUser = ({ setNewUser, newUser, setNotification, login }) => {
   }
 
   return (
-    <>
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
+              <CloseButton  onClick={() => setShowLogin(false)} />
       <Form onSubmit={onFormSubmit}>
         <div>
           <Form.Label>Username</Form.Label>
@@ -67,11 +82,12 @@ const NewUser = ({ setNewUser, newUser, setNotification, login }) => {
             Create User
           </Button>
           <Button variant='secondary' type='button' onClick={() => setNewUser(!newUser)}>
-            Cancel
+            Login
           </Button>
         </div>
       </Form>
-    </>
+      </div>
+    </div>
   );
 }
 

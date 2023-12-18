@@ -6,15 +6,12 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
 
-const Books = props => {
+const Books = () => {
   const [genre, setGenre] = useState(undefined)
   const result = useQuery(ALL_BOOKS, {
     variables: { genre },
   }) 
 
-  if (!props.show) {
-    return null
-  }
 
   if (result.loading) {
     return <div>loading...</div>

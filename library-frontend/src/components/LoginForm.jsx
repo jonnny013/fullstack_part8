@@ -4,8 +4,10 @@ import { LOGIN } from '../queries'
 import NewUser from './NewUser'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import CloseButton from 'react-bootstrap/CloseButton';
 
-const LoginForm = ({  setToken, show, setPage, setNotification }) => {
+
+const LoginForm = ({  setToken, setNotification, setShowLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [newUser, setNewUser] = useState(false)
@@ -24,9 +26,9 @@ const LoginForm = ({  setToken, show, setPage, setNotification }) => {
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('library-user-token', token)
-      setPage('authors')
       setPassword('')
       setUsername('')
+      setShowLogin(false)
     }
   }, [result.data])
 
@@ -41,19 +43,28 @@ const LoginForm = ({  setToken, show, setPage, setNotification }) => {
   }
 
 
-
-  if (!show) {
-    return null
-  }
-
   if (newUser) {
     return (
-      <NewUser setNewUser={setNewUser} newUser={newUser} setNotification={setNotification} login={newUserLogin} />
+      <NewUser setNewUser={setNewUser} newUser={newUser} setNotification={setNotification} login={newUserLogin} setShowLogin={setShowLogin} />
     )
   }
 
   return (
-    <div>
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
+              <CloseButton  onClick={() => setShowLogin(false)} />
       <Form onSubmit={submit}>
         <div>
           <Form.Label>Username</Form.Label>
@@ -82,6 +93,7 @@ const LoginForm = ({  setToken, show, setPage, setNotification }) => {
           </Button>
         </div>
       </Form>
+      </div>
     </div>
   );
 }
