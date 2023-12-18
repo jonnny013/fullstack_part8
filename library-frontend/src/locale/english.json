@@ -6,5 +6,21 @@
   "nav-Add-Books": "Add book",
   "nav-Login": "Login",
   "nav-Recom": "Recommendations",
-  "nav-Logout": "Logout"
+  "nav-Logout": "Logout",
+
+  "notification-birthYear": "Birth year updated",
+  "notification-author-not-found": "Person not found",
+  "": "",
+  "": "",
+  "": "",
+  "": "",
+  "": "",
+
+  "author-birthyear-title": "Set Birth Year",
+  "author-option-1": "Choose an author",
+  "author-birthyear-form-title": "Birth Year",
+  "author-form-placeholder-1": "Enter year",
+  "author-update-button": "Update",
+  "": "",
+  "": ""
 }

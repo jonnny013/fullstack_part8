@@ -3,9 +3,11 @@ import { useMutation } from '@apollo/client'
 import { EDIT_BIRTH_YEAR } from '../queries'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { useTranslation } from 'react-i18next';
 
 
 const AuthorBirthYear = ({ authors, setNotification }) => {
+  const {t} = useTranslation()
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [changeYear, result] = useMutation(EDIT_BIRTH_YEAR, {
@@ -13,13 +15,13 @@ const AuthorBirthYear = ({ authors, setNotification }) => {
       setNotification(error.graphQLErrors.map(e => e.message).join('\n'))
     },
     onCompleted: () => {
-      setNotification(`Birth year updated`)
+      setNotification(t('notification-birthYear'));
     },
   })
 
   useEffect(() => {
     if (result.data && result.data.editAuthor === null) {
-      setNotification('person not found')
+      setNotification(t('notification-author-not-found'));
     }
   }, [result.data])
 
@@ -33,14 +35,14 @@ const AuthorBirthYear = ({ authors, setNotification }) => {
   }
   return (
     <>
-      <h2>Set Birth Year</h2>
+      <h2>{t('author-birthyear-title')}</h2>
       <Form onSubmit={submit}>
         <div>
           <Form.Select
-            defaultValue='Choose an author'
+            defaultValue={t('author-option-1')}
             onChange={({target}) => setName(target.value)}
           >
-            <option disabled>Choose an author</option>
+            <option disabled>{t('author-option-1')}</option>
             {authors.map(a => (
               <option key={a.id} value={a.name}>
                 {a.name}
@@ -49,21 +51,19 @@ const AuthorBirthYear = ({ authors, setNotification }) => {
           </Form.Select>
         </div>
         <div>
-          <Form.Label>Birth Year</Form.Label>
+          <Form.Label>{t('author-birthyear-form-title')}</Form.Label>
           <Form.Control
-            placeholder='Enter year'
+            placeholder={t('author-form-placeholder-1')}
             value={born}
             onChange={({target}) => setBorn(Number(target.value))}
           />
         </div>
         <br />
-        <Button type='submit' variant='secondary'>Update</Button>
+        <Button type='submit' variant='secondary'>
+          {t('author-update-button')}
+        </Button>
       </Form>
     </>
   );
-
 }
-
-
-
 export default AuthorBirthYear
