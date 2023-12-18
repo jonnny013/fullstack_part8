@@ -7,13 +7,6 @@ const Notification = (props) => {
     }, 10000)
   }
 
-  const divStyle = {
-    width: '100vw', // 100% of the viewport width
-    height: '100vh', // 100% of the viewport height
-    position: 'fixed',
-    zIndex: -1
-  }
-
   const bottomRightDivStyle = {
     position: 'absolute',
     bottom: 50,
@@ -28,11 +21,12 @@ const Notification = (props) => {
     justifyContent: 'center',
     fontSize: '1.5em', // Adjust the font size as needed
     fontFamily: 'Arial, sans-serif',
+    zIndex: 100
   }
 
 
   return (
-    <div style={divStyle}>
+    <div >
       {props.info && <div style={bottomRightDivStyle}>{props.info}</div>}
     </div>
   )

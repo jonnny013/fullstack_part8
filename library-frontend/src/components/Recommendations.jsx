@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client'
 import { ALL_BOOKS, USER_INFO } from '../queries'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import Table from 'react-bootstrap/Table';
 
 const Recommendations = props => {
   const [genre, setGenre] = useState(undefined)
@@ -36,13 +37,15 @@ const Recommendations = props => {
           Showing your favorite genre: <b>{genre}</b>
         </p>
       )}
-      <table>
-        <tbody>
+      <Table striped bordered hover variant='dark'>
+        <thead>
           <tr>
-            <th></th>
-            <th>author</th>
-            <th>published</th>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Published</th>
           </tr>
+          </thead>
+          <tbody>
           {books.map(a => (
             <tr key={a.title}>
               <td>{a.title}</td>
@@ -51,7 +54,7 @@ const Recommendations = props => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }

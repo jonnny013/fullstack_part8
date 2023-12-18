@@ -2,6 +2,9 @@ import { useState } from 'react'
 import {useMutation} from '@apollo/client'
 import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../queries'
 import { updateCache } from '../App'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 
 const NewBook = props => {
   const [title, setTitle] = useState('')
@@ -44,43 +47,52 @@ const NewBook = props => {
 
   return (
     <div>
-      <form onSubmit={submit}>
+      <Form onSubmit={submit}>
         <div>
-          title
-          <input
+          <Form.Label>Book Title</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter title'
             value={title}
-            onChange={({ target }) => setTitle(target.value)}
+            onChange={({target}) => setTitle(target.value)}
           />
         </div>
         <div>
-          author
-          <input
+          <Form.Label>Author</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter author'
             value={author}
-            onChange={({ target }) => setAuthor(target.value)}
+            onChange={({target}) => setAuthor(target.value)}
           />
         </div>
         <div>
-          published
-          <input
+          <Form.Label>Year Published</Form.Label>
+          <Form.Control
             type='number'
+            placeholder='Enter year'
             value={published}
-            onChange={({ target }) => setPublished(Number(target.value))}
+            onChange={({target}) => setPublished(Number(target.value))}
           />
         </div>
         <div>
-          <input
+          <Form.Label>Genre(s)</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter genres'
             value={genre}
-            onChange={({ target }) => setGenre(target.value)}
+            onChange={({target}) => setGenre(target.value)}
           />
-          <button onClick={addGenre} type='button'>
-            add genre
-          </button>
+          <Button onClick={addGenre} type='button'>
+            Add genre
+          </Button>
         </div>
-        <div>genres: {genres.join(' ')}</div>
-        <button type='submit'>create book</button>
-      </form>
+        <div>Genres: {genres.join(' ')}</div>
+        <br />
+        <Button type='submit'>Create book</Button>
+      </Form>
     </div>
-  )
+  );
 }
 
 export default NewBook

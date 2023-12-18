@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../queries'
 import NewUser from './NewUser'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const LoginForm = ({  setToken, show, setPage, setNotification }) => {
   const [username, setUsername] = useState('')
@@ -52,27 +54,36 @@ const LoginForm = ({  setToken, show, setPage, setNotification }) => {
 
   return (
     <div>
-      <form onSubmit={submit}>
+      <Form onSubmit={submit}>
         <div>
-          username{' '}
-          <input
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter username'
             value={username}
-            onChange={({ target }) => setUsername(target.value)}
+            onChange={({target}) => setUsername(target.value)}
           />
         </div>
         <div>
-          password{' '}
-          <input
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type='password'
+            placeholder='Password'
             value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={({target}) => setPassword(target.value)}
           />
         </div>
-        <button type='submit'>Login</button>
-        <button type='button' onClick={() => setNewUser(!newUser)}>New User</button>
-      </form>
+        <div style={{margin: 10, display: 'flex', gap: 10}}>
+          <Button variant='secondary' type='submit'>
+            Login
+          </Button>
+          <Button variant='secondary' type='button' onClick={() => setNewUser(!newUser)}>
+            New User
+          </Button>
+        </div>
+      </Form>
     </div>
-  )
+  );
 }
 
 export default LoginForm

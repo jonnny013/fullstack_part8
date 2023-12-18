@@ -7,6 +7,8 @@ import Recommendations from './components/Recommendations'
 import {useApolloClient, useSubscription} from '@apollo/client'
 import Notification from './components/Notification'
 import { ALL_BOOKS, BOOK_ADDED} from './queries'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
 
 export const updateCache = (cache, query, addedBook) => {
   const uniqByName = a => {
@@ -51,25 +53,44 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div style={{margin: 10}}>
       <Notification info={notification} setNotification={setNotification} />
-      <div>
-        <button onClick={() => setPage('authors')}>authors</button>
-        <button onClick={() => setPage('books')}>books</button>
+      <div style={{margin: 10, display: 'flex', gap: 10, overflow: 'scroll'}}>
+        <Button variant='secondary' onClick={() => setPage('authors')}>
+          Authors
+        </Button>
+        {'  '}
+        <Button variant='secondary' onClick={() => setPage('books')}>
+          Books
+        </Button>
+        {'  '}
         {token ? (
-          <button onClick={() => setPage('add')}>add book</button>
+          <Button variant='secondary' onClick={() => setPage('add')}>
+            Add book
+          </Button>
         ) : (
-          <button onClick={() => setPage('login')}>login</button>
-        )}
+          <Button variant='secondary' onClick={() => setPage('login')}>
+            Login
+          </Button>
+        )}{' '}
         {token && (
-          <button onClick={() => setPage('recommendations')}>
-            recommendations
-          </button>
+          <Button variant='secondary' onClick={() => setPage('recommendations')}>
+            Recommendations
+          </Button>
         )}
-        {token && <button onClick={logout}>logout</button>}
+        {'  '}
+        {token && (
+          <Button variant='secondary' onClick={logout}>
+            Logout
+          </Button>
+        )}
       </div>
 
-      <Authors show={page === 'authors'} token={token} setNotification={setNotification} />
+      <Authors
+        show={page === 'authors'}
+        token={token}
+        setNotification={setNotification}
+      />
       <Books show={page === 'books'} />
       <Recommendations show={page === 'recommendations'} />
       <LoginForm
@@ -78,9 +99,13 @@ const App = () => {
         setPage={setPage}
         setNotification={setNotification}
       />
-      <NewBook show={page === 'add'} setPage={setPage} setNotification={setNotification} />
+      <NewBook
+        show={page === 'add'}
+        setPage={setPage}
+        setNotification={setNotification}
+      />
     </div>
-  )
+  );
 }
 
 export default App

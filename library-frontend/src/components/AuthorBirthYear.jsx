@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
-
 import { EDIT_BIRTH_YEAR } from '../queries'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 
 const AuthorBirthYear = ({ authors, setNotification }) => {
   const [name, setName] = useState('')
@@ -32,11 +34,11 @@ const AuthorBirthYear = ({ authors, setNotification }) => {
   return (
     <>
       <h2>Set Birth Year</h2>
-      <form onSubmit={submit}>
+      <Form onSubmit={submit}>
         <div>
-          <select
+          <Form.Select
             defaultValue='Choose an author'
-            onChange={({ target }) => setName(target.value)}
+            onChange={({target}) => setName(target.value)}
           >
             <option disabled>Choose an author</option>
             {authors.map(a => (
@@ -44,19 +46,21 @@ const AuthorBirthYear = ({ authors, setNotification }) => {
                 {a.name}
               </option>
             ))}
-          </select>
+          </Form.Select>
         </div>
         <div>
-          Birth year
-          <input
+          <Form.Label>Birth Year</Form.Label>
+          <Form.Control
+            placeholder='Enter year'
             value={born}
-            onChange={({ target }) => setBorn(Number(target.value))}
+            onChange={({target}) => setBorn(Number(target.value))}
           />
         </div>
-        <button type='submit'>Update</button>
-      </form>
+        <br />
+        <Button type='submit' variant='secondary'>Update</Button>
+      </Form>
     </>
-  )
+  );
 
 }
 

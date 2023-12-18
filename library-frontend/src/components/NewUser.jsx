@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { useMutation } from '@apollo/client'
 import { CREATE_USER } from '../queries'
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const NewUser = ({ setNewUser, newUser, setNotification, login }) => {
   const [username, setUsername] = useState('')
@@ -32,33 +34,45 @@ const NewUser = ({ setNewUser, newUser, setNotification, login }) => {
 
   return (
     <>
-      <form onSubmit={onFormSubmit}>
+      <Form onSubmit={onFormSubmit}>
         <div>
-          Username
-          <input
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter username'
             value={username}
-            onChange={({ target }) => setUsername(target.value)}
+            onChange={({target}) => setUsername(target.value)}
           />
         </div>
         <div>
-          Password
-          <input
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type='password'
+            placeholder='Password'
             value={password}
-            onChange={({ target }) => setPassword(target.value)}
+            onChange={({target}) => setPassword(target.value)}
           />
         </div>
         <div>
-          Favorite Genre
-          <input value={genre} onChange={({target}) => setGenre(target.value)} />
+          <Form.Label>Favorite Genre</Form.Label>
+          <Form.Control
+            type='text'
+            placeholder='Enter username'
+            value={genre}
+            onChange={({target}) => setGenre(target.value)}
+          />
         </div>
-        <button type='submit'>Create User</button>
-        <button type='button' onClick={() => setNewUser(!newUser)}>
-          Cancel
-        </button>
-      </form>
+        <div style={{margin: 10, display: 'flex', gap: 10}}>
+          <Button variant='secondary' type='submit'>
+            Create User
+          </Button>
+          <Button variant='secondary' type='button' onClick={() => setNewUser(!newUser)}>
+            Cancel
+          </Button>
+        </div>
+      </Form>
     </>
-  )
+  );
 }
 
 export default NewUser

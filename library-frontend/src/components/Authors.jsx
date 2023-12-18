@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS } from "../queries"
 import AuthorBirthYear from './AuthorBirthYear'
+import Table from 'react-bootstrap/Table';
 
 const Authors = props => {
   const result = useQuery(ALL_AUTHORS)
@@ -16,14 +17,16 @@ const Authors = props => {
   
   return (
     <div>
-      <h2>authors</h2>
-      <table>
-        <tbody>
+      <h2>Authors</h2>
+      <Table striped bordered hover variant='light'>
+        <thead>
           <tr>
-            <th></th>
-            <th>born</th>
-            <th>books</th>
+            <th>Name</th>
+            <th>Born</th>
+            <th>Books</th>
           </tr>
+        </thead>
+        <tbody>
           {authors.map(a => (
             <tr key={a.name}>
               <td>{a.name}</td>
@@ -32,10 +35,12 @@ const Authors = props => {
             </tr>
           ))}
         </tbody>
-      </table>
-      {props.token && <AuthorBirthYear authors={authors} setNotification={props.setNotification} />}
+      </Table>
+      {props.token && (
+        <AuthorBirthYear authors={authors} setNotification={props.setNotification} />
+      )}
     </div>
-  )
+  );
 }
 
 export default Authors
