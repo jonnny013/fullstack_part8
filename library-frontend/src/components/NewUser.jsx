@@ -45,47 +45,52 @@ const NewUser = ({ setNewUser, newUser, setNotification, login, setShowLogin }) 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        zIndex: 100,
       }}
     >
-      <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>
-              <CloseButton  onClick={() => setShowLogin(false)} />
-      <Form onSubmit={onFormSubmit}>
-        <div>
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Enter username'
-            value={username}
-            onChange={({target}) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Password'
-            value={password}
-            onChange={({target}) => setPassword(target.value)}
-          />
-        </div>
-        <div>
-          <Form.Label>Favorite Genre</Form.Label>
-          <Form.Control
-            type='text'
-            placeholder='Enter username'
-            value={genre}
-            onChange={({target}) => setGenre(target.value)}
-          />
-        </div>
-        <div style={{margin: 10, display: 'flex', gap: 10}}>
-          <Button variant='secondary' type='submit'>
-            Create User
-          </Button>
-          <Button variant='secondary' type='button' onClick={() => setNewUser(!newUser)}>
-            Login
-          </Button>
-        </div>
-      </Form>
+      <div style={{backgroundColor: 'white', padding: '20px', borderRadius: '5px'}}>
+        <CloseButton onClick={() => setShowLogin(false)} />
+        <Form onSubmit={onFormSubmit}>
+          <div>
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter username'
+              value={username}
+              onChange={({target}) => setUsername(target.value)}
+            />
+          </div>
+          <div>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Password'
+              value={password}
+              onChange={({target}) => setPassword(target.value)}
+            />
+          </div>
+          <div>
+            <Form.Label>Favorite Genre</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter username'
+              value={genre}
+              onChange={({target}) => setGenre(target.value)}
+            />
+          </div>
+          <div style={{margin: 10, display: 'flex', gap: 10}}>
+            <Button variant='secondary' type='submit'>
+              Create User
+            </Button>
+            <Button
+              variant='secondary'
+              type='button'
+              onClick={() => setNewUser(!newUser)}
+            >
+              Login
+            </Button>
+          </div>
+        </Form>
       </div>
     </div>
   );

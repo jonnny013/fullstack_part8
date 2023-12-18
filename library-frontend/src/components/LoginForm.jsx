@@ -61,6 +61,7 @@ const LoginForm = ({  setToken, setNotification, setShowLogin }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        zIndex: 100
       }}
     >
       <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '5px' }}>

@@ -8,6 +8,7 @@ import NavBar from './components/NavBar'
 import Header from './components/Header'
 import LoginForm from './components/LoginForm';
 import Footer from './components/Footer';
+import './App.css';
 
 export const updateCache = (cache, query, addedBook) => {
   const uniqByName = a => {
@@ -52,29 +53,33 @@ const App = () => {
   }
 
   return (
-    <div style={{margin: 10}}>
-      <Notification info={notification} setNotification={setNotification} />
-      <Header
-        token={token}
-        logout={logout}
-        setShowLogin={setShowLogin}
-        showLogin={showLogin}
-      />
-      {showLogin && (
-        <LoginForm
-          setToken={setToken}
-          setNotification={setNotification}
+    <div style={{margin: 10}} className='app-container'>
+      <div className='content'>
+        <Notification info={notification} setNotification={setNotification} />
+        <Header
+          token={token}
+          logout={logout}
           setShowLogin={setShowLogin}
           showLogin={showLogin}
         />
-      )}
-      <NavBar
-        logout={logout}
-        token={token}
-        setNotification={setNotification}
-        setToken={setToken}
-      />
-      <Footer />
+        {showLogin && (
+          <LoginForm
+            setToken={setToken}
+            setNotification={setNotification}
+            setShowLogin={setShowLogin}
+            showLogin={showLogin}
+          />
+        )}
+        <NavBar
+          logout={logout}
+          token={token}
+          setNotification={setNotification}
+          setToken={setToken}
+        />
+      </div>
+      <div className='footer'>
+        <Footer />
+      </div>
     </div>
   );
 }
