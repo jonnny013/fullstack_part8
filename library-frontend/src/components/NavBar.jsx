@@ -5,11 +5,13 @@ import Authors from './Authors';
 import Books from './Books';
 import NewBook from './NewBook';
 import Recommendations from './Recommendations';
+import { useState } from 'react';
 
 const NavBar = ({ token, setNotification}) => {
   const {t} = useTranslation();
+  const [activeTab, setActiveTab] = useState('authors');
   return (
-    <Tabs defaultActiveKey='authors'>
+    <Tabs activeKey={activeTab} onSelect={(key) => setActiveTab(key)}>
       <Tab eventKey='authors' title={t('nav-Authors')}>
         <Authors
           token={token}
@@ -26,6 +28,7 @@ const NavBar = ({ token, setNotification}) => {
         >
           <NewBook
             setNotification={setNotification}
+            setActiveTab={setActiveTab}
           />
         </Tab>
       )}

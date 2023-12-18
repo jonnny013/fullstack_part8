@@ -2,25 +2,27 @@ import { useQuery } from '@apollo/client'
 import { ALL_AUTHORS } from "../queries"
 import AuthorBirthYear from './AuthorBirthYear'
 import Table from 'react-bootstrap/Table';
+import {useTranslation} from 'react-i18next';
 
 const Authors = props => {
-  const result = useQuery(ALL_AUTHORS)
-
+  const {t} = useTranslation()
+  const result = useQuery(ALL_AUTHORS);
 
   if (result.loading) {
-    return <div>loading...</div>
+    return <div>{t('authors-loading')}</div>;
   }
-  const authors = result.data.allAuthors
-  
+
+  const authors = result.data.allAuthors;
+
   return (
     <div>
-      <h2>Authors</h2>
+      <h2>{t('authors-title')}</h2>
       <Table striped bordered hover variant='light'>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Born</th>
-            <th>Books</th>
+            <th>{t('authors-table-header-name')}</th>
+            <th>{t('authors-table-header-born')}</th>
+            <th>{t('authors-table-header-books')}</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +40,7 @@ const Authors = props => {
       )}
     </div>
   );
-}
+};
+
 
 export default Authors

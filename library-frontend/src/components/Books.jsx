@@ -1,42 +1,44 @@
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
-import _ from 'underscore'
-import { useState } from 'react'
+import {useState} from 'react';
+import {useQuery} from '@apollo/client';
+import {ALL_BOOKS} from '../queries';
+import _ from 'underscore';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-
+import { useTranslation } from 'react-i18next';
 
 const Books = () => {
-  const [genre, setGenre] = useState(undefined)
+  const {t } = useTranslation()
+  const [genre, setGenre] = useState(undefined);
   const result = useQuery(ALL_BOOKS, {
-    variables: { genre },
-  }) 
-
+    variables: {genre},
+  });
 
   if (result.loading) {
-    return <div>loading...</div>
+    return <div>{t('books-loading')}</div>;
   }
-  const books = result.data.allBooks
-  const allGenres = books.map(a => a.genres).flat()
-  const filteredGenres = _.uniq(allGenres, false)
 
-  const genres = (name) => {
-    setGenre(name)
-  }
+  const books = result.data.allBooks;
+  const allGenres = books.map(a => a.genres).flat();
+  const filteredGenres = _.uniq(allGenres, false);
+
+  const genres = name => {
+    setGenre(name);
+  };
+
   return (
     <div>
-      <h2>Books</h2>
+      <h2>{t('books-title')}</h2>
       {genre && (
         <p>
-          Showing genre: <b>{genre}</b>
+          {t('books-showing-genre')} <b>{genre}</b>
         </p>
       )}
       <Table striped bordered hover variant='light'>
         <thead>
           <tr>
-            <th>Book Name</th>
-            <th>Author</th>
-            <th>Published</th>
+            <th>{t('books-table-header-name')}</th>
+            <th>{t('books-table-header-author')}</th>
+            <th>{t('books-table-header-published')}</th>
           </tr>
         </thead>
         <tbody>
@@ -56,11 +58,11 @@ const Books = () => {
           </Button>
         ))}
         <Button variant='secondary' onClick={() => genres(undefined)}>
-          All genres
+          {t('books-all-genres')}
         </Button>
       </div>
     </div>
   );
-}
+};
 
-export default Books
+export default Books;

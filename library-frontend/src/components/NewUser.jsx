@@ -4,34 +4,36 @@ import { CREATE_USER } from '../queries'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import CloseButton from 'react-bootstrap/CloseButton';
+import {useTranslation} from 'react-i18next';
 
-const NewUser = ({ setNewUser, newUser, setNotification, login, setShowLogin }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [genre, setGenre] = useState('')
+const NewUser = ({setNewUser, newUser, setNotification, login, setShowLogin}) => {
+  const {t} = useTranslation();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [genre, setGenre] = useState('');
 
   const [createUser, result] = useMutation(CREATE_USER, {
     onError: error => {
-      setNotification(error.graphQLErrors[0].message)
-    }, 
+      setNotification(error.graphQLErrors[0].message);
+    },
     onCompleted: () => {
-      setNotification(`User "${username}" create `)
-      login(username, password)
-    }
-  })
+      setNotification(t('notification-userCreated', {username: username}));
+      login(username, password);
+    },
+  });
 
   useEffect(() => {
     if (result.data) {
-      setPassword('')
-      setUsername('')
-      setGenre('')
+      setPassword('');
+      setUsername('');
+      setGenre('');
     }
-  }, [result.data])
+  }, [result.data]);
 
-  const onFormSubmit = async (event) => {
-    event.preventDefault()
-    createUser({variables: { password, username, favoriteGenre: genre }}) 
-  }
+  const onFormSubmit = async event => {
+    event.preventDefault();
+    createUser({variables: {password, username, favoriteGenre: genre}});
+  };
 
   return (
     <div
@@ -52,48 +54,48 @@ const NewUser = ({ setNewUser, newUser, setNotification, login, setShowLogin }) 
         <CloseButton onClick={() => setShowLogin(false)} />
         <Form onSubmit={onFormSubmit}>
           <div>
-            <Form.Label>Username</Form.Label>
+            <Form.Label>{t('newUser-username-label')}</Form.Label>
             <Form.Control
               type='text'
-              placeholder='Enter username'
+              placeholder={t('newUser-username-placeholder')}
               value={username}
               onChange={({target}) => setUsername(target.value)}
             />
           </div>
           <div>
-            <Form.Label>Password</Form.Label>
+            <Form.Label>{t('newUser-password-label')}</Form.Label>
             <Form.Control
               type='password'
-              placeholder='Password'
+              placeholder={t('newUser-password-placeholder')}
               value={password}
               onChange={({target}) => setPassword(target.value)}
             />
           </div>
           <div>
-            <Form.Label>Favorite Genre</Form.Label>
+            <Form.Label>{t('newUser-favoriteGenre-label')}</Form.Label>
             <Form.Control
               type='text'
-              placeholder='Enter username'
+              placeholder={t('newUser-favoriteGenre-placeholder')}
               value={genre}
               onChange={({target}) => setGenre(target.value)}
             />
           </div>
           <div style={{margin: 10, display: 'flex', gap: 10}}>
             <Button variant='secondary' type='submit'>
-              Create User
+              {t('newUser-createUser-button')}
             </Button>
             <Button
               variant='secondary'
               type='button'
               onClick={() => setNewUser(!newUser)}
             >
-              Login
+              {t('newUser-login-button')}
             </Button>
           </div>
         </Form>
       </div>
     </div>
   );
-}
+};
 
-export default NewUser
+export default NewUser;

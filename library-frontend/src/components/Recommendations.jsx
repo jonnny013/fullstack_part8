@@ -3,46 +3,47 @@ import { ALL_BOOKS, USER_INFO } from '../queries'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Table from 'react-bootstrap/Table';
+import {useTranslation} from 'react-i18next';
 
 const Recommendations = () => {
-  const [genre, setGenre] = useState(undefined)
+  const {t} = useTranslation();
+  const [genre, setGenre] = useState(undefined);
 
   const result = useQuery(ALL_BOOKS, {
-    variables: { genre },
-  })
-  const userResult = useQuery(USER_INFO)
+    variables: {genre},
+  });
+  const userResult = useQuery(USER_INFO);
 
   useEffect(() => {
     if (userResult.data) {
-      if (userResult.data.me){
-        setGenre(userResult.data.me.favoriteGenre)
+      if (userResult.data.me) {
+        setGenre(userResult.data.me.favoriteGenre);
       }
-      
     }
-  }, [userResult.data])
+  }, [userResult.data]);
 
   if (result.loading) {
-    return <div>loading...</div>
+    return <div>{t('books-loading')}</div>;
   }
-  const books = result.data.allBooks
-  
+  const books = result.data.allBooks;
+
   return (
     <div>
-      <h2>Recommended for you</h2>
+      <h2>{t('recommendations-title')}</h2>
       {genre && (
         <p>
-          Showing your favorite genre: <b>{genre}</b>
+          {t('recommendations-showingGenre')} <b>{genre}</b>
         </p>
       )}
       <Table striped bordered hover variant='dark'>
         <thead>
           <tr>
-            <th>Book Name</th>
-            <th>Author</th>
-            <th>Published</th>
+            <th>{t('books-table-header-name')}</th>
+            <th>{t('books-table-header-author')}</th>
+            <th>{t('books-table-header-published')}</th>
           </tr>
-          </thead>
-          <tbody>
+        </thead>
+        <tbody>
           {books.map(a => (
             <tr key={a.title}>
               <td>{a.title}</td>
@@ -53,7 +54,7 @@ const Recommendations = () => {
         </tbody>
       </Table>
     </div>
-  )
-}
+  );
+};
 
-export default Recommendations
+export default Recommendations;

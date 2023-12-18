@@ -4,9 +4,10 @@ import { ALL_AUTHORS, ALL_BOOKS, CREATE_BOOK } from '../queries'
 import { updateCache } from '../App'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
+import {useTranslation} from 'react-i18next';
 
 const NewBook = props => {
+  const {t} = useTranslation();
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
@@ -27,13 +28,12 @@ const NewBook = props => {
     event.preventDefault()
 
     createBook({ variables: { title, author, published, genres }})
-
+    props.setActiveTab('books');
     setTitle('')
     setPublished('')
     setAuthor('')
     setGenres([])
     setGenre('')
-    props.setPage('books')
   }
 
   const addGenre = () => {
@@ -45,47 +45,49 @@ const NewBook = props => {
     <div>
       <Form onSubmit={submit}>
         <div>
-          <Form.Label>Book Title</Form.Label>
+          <Form.Label>{t('book-title-label')}</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Enter title'
+            placeholder={t('book-title-placeholder')}
             value={title}
             onChange={({target}) => setTitle(target.value)}
           />
         </div>
         <div>
-          <Form.Label>Author</Form.Label>
+          <Form.Label>{t('book-author-label')}</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Enter author'
+            placeholder={t('book-author-placeholder')}
             value={author}
             onChange={({target}) => setAuthor(target.value)}
           />
         </div>
         <div>
-          <Form.Label>Year Published</Form.Label>
+          <Form.Label>{t('book-published-label')}</Form.Label>
           <Form.Control
             type='number'
-            placeholder='Enter year'
+            placeholder={t('book-published-placeholder')}
             value={published}
             onChange={({target}) => setPublished(Number(target.value))}
           />
         </div>
         <div>
-          <Form.Label>Genre(s)</Form.Label>
+          <Form.Label>{t('book-genre-label')}</Form.Label>
           <Form.Control
             type='text'
-            placeholder='Enter genres'
+            placeholder={t('book-genre-placeholder')}
             value={genre}
             onChange={({target}) => setGenre(target.value)}
           />
           <Button onClick={addGenre} type='button'>
-            Add genre
+            {t('book-addGenre-button')}
           </Button>
         </div>
-        <div>Genres: {genres.join(' ')}</div>
+        <div>
+          {t('book-genres-label')}: {genres.join(' ')}
+        </div>
         <br />
-        <Button type='submit'>Create book</Button>
+        <Button type='submit'>{t('book-createButton')}</Button>
       </Form>
     </div>
   );
