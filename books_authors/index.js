@@ -7,7 +7,7 @@ const { makeExecutableSchema } = require('@graphql-tools/schema')
 const express = require('express')
 const cors = require('cors')
 const http = require('http')
-
+const {createProxyMiddleware} = require('http-proxy-middleware');
 const { WebSocketServer } = require('ws')
 const { useServer } = require('graphql-ws/lib/use/ws')
 
@@ -66,6 +66,16 @@ const start = async () => {
       },
     ],
   })
+
+  if (process.env.NODE_ENV === 'development') {
+    app.use(
+      '/vite', // Change this path to match your Vite configuration if needed
+      createProxyMiddleware({
+        target: 'http://localhost:5173', // Vite development server URL
+        changeOrigin: true,
+      })
+    );
+  }
 
   await server.start()
 
