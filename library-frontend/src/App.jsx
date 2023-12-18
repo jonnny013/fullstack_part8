@@ -7,6 +7,7 @@ import {useTranslation} from 'react-i18next';
 import NavBar from './components/NavBar'
 import Header from './components/Header'
 import LoginForm from './components/LoginForm';
+import Footer from './components/Footer';
 
 export const updateCache = (cache, query, addedBook) => {
   const uniqByName = a => {
@@ -73,6 +74,7 @@ const App = () => {
         setNotification={setNotification}
         setToken={setToken}
       />
+      <Footer />
     </div>
   );
 }
