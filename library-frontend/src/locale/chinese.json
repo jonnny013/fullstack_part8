@@ -63,7 +63,7 @@
   "newUser-favoriteGenre-label": "喜愛類型",
   "newUser-favoriteGenre-placeholder": "輸入喜愛類型",
   "newUser-createUser-button": "創建用戶",
-  "newUser-login-button": "登入",
+  "newUser-login-button": "取消",
 
   "recommendations-title": "為您推薦",
   "recommendations-showingGenre": "顯示您喜愛的類型:"

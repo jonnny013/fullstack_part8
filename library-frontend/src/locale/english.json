@@ -63,7 +63,7 @@
   "newUser-favoriteGenre-label": "Favorite Genre",
   "newUser-favoriteGenre-placeholder": "Enter favorite genre",
   "newUser-createUser-button": "Create User",
-  "newUser-login-button": "Login",
+  "newUser-login-button": "Cancel",
 
   "recommendations-title": "Recommended for you",
   "recommendations-showingGenre": "Showing your favorite genre:"

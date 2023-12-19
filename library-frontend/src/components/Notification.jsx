@@ -13,7 +13,7 @@ const Notification = (props) => {
     right: 50,
     width: '300px',
     height: '100px',
-    backgroundColor: 'lightblue',
+    backgroundColor: 'rgba(173, 216, 230, 0.5)',
     border: '1px black solid',
     borderRadius: 3,
     display: 'flex',
@@ -21,8 +21,8 @@ const Notification = (props) => {
     justifyContent: 'center',
     fontSize: '1.5em', // Adjust the font size as needed
     fontFamily: 'Arial, sans-serif',
-    zIndex: 100
-  }
+    zIndex: 100,
+  };
 
 
   return (
